@@ -95,8 +95,8 @@ function createTimeInOrOutEvent(emprecobj, datestr, usetimein)
     if (isDateStrInCorrectFmt(datestr));
     else
     {
-        throw "could not create time in event because the date string was not in the " +
-            "correct format, but it was not!";
+        throw "could not create time in or out event because the date string was not " +
+            "in the correct format!";
     }
 
     let mytimeinobj = {
@@ -131,9 +131,11 @@ function createTimeOutEvent(emprecobj, datestr)
 
 function noMissingPunchesFor(empobj)
 {
+    //console.log("empobj = " + empobj);
+    //console.log("empobj.timeInEvents = " + empobj.timeInEvents);
+    //console.log("empobj.timeOutEvents = " + empobj.timeOutEvents);
     //console.log("empobj.timeInEvents.length = " + empobj.timeInEvents.length);
     //console.log("empobj.timeOutEvents.length = " + empobj.timeOutEvents.length);
-    
     if (empobj.timeInEvents.length == empobj.timeOutEvents.length);
     else
     {
@@ -154,8 +156,8 @@ function hoursWorkedOnDate(emprecobj, datestr)
     if (isDateStrInCorrectFmt(datestr));
     else
     {
-        throw "could not create time in event because the date string was not in the " +
-            "correct format, but it was not!";
+        throw "could not calculate the hours worked on the date because the date " +
+            "string was not in the correct format!";
     }
     if (noMissingPunchesFor(emprecobj));
     else throw "you missed some punches!";
@@ -174,6 +176,20 @@ function wagesEarnedOnDate(emprecobj, datestr)
     return hoursWorkedOnDate(emprecobj, datestr) * emprecobj.payPerHour;
 }
 
+function getAllValidDatesForEmp(emprecobj)
+{
+    if (emprecobj == undefined || emprecobj == null)
+    {
+        throw "the employee object must be defined!";
+    }
+    //else;//do nothing
+
+    if (noMissingPunchesFor(emprecobj));
+    else throw "you missed some punches!";
+
+    throw "NOT DONE YET 6-27-2023 2:40 AM!";
+}
+
 function allWagesFor(emprecobj)
 {
     //get all of the dates and then call
@@ -184,11 +200,15 @@ function allWagesFor(emprecobj)
     if (noMissingPunchesFor(emprecobj));
     else throw "you missed some punches!";
 
-    throw "NOT DONE YET 6-27-2023 2:40 AM!";
+    let mvdates = getAllValidDatesForEmp(emprecobj);
+    return mvdates.reduce(
+        (acc, datestr) => acc + wagesEarnedOnDate(emprecobj, datestr), 0);
 }
 
 function calculatePayroll(emps)
 {
+    //console.log("emps = " + emps);
+    //console.log("emps.length = " + emps.length);
     if (emps == undefined || emps == null)
     {
         throw "employees array must be defined!";
@@ -199,6 +219,6 @@ function calculatePayroll(emps)
         //for each employee call allWagesFor(emprecobj)
         //and accumulate or reduce the value
         
-        throw "NOT DONE YET 6-27-2023 2:40 AM!";
+        return emps.reduce((acc, emp) => acc + allWagesFor(emp), 0);
     }
 }
