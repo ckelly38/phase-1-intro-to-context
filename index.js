@@ -184,13 +184,19 @@ function getDateObjFromDatestr(datestr)
     let myhrnum = Number(myhrstr);
     let myminnum = Number(myminstr);
 
+    //const birthday4 = new Date(1995, 11, 17, 3, 24, 0);
+    //year, month, day, hour, minute, second
+    //the month starts at 0 for January and 11 for December
+
+
     let mdate = new Date(myyearnum, mymonthnum - 1, mydaynum, myhrnum, myminnum, 0);
     //console.log("mdate = " + mdate);
 
     return mdate;
 }
 
-function getDateForItem(item){
+function getDateForItem(item)
+{
     //console.log("indx = " + indx);
     //console.log("item = " + item);
     //console.log("Object.keys(item) = " + Object.keys(item));
@@ -224,9 +230,6 @@ function getDateForItem(item){
     return getDateObjFromDatestr(item.date + " " + myhrstr);
 }
 
-//const birthday4 = new Date(1995, 11, 17, 3, 24, 0);
-//year, month, day, hour, minute, second
-//the month starts at 0 for January and 11 for December
 function hoursWorkedOnDate(emprecobj, datestr)
 {
     if (isDateStrInCorrectFmt(datestr));
@@ -249,17 +252,62 @@ function hoursWorkedOnDate(emprecobj, datestr)
 
     let mdate = getDateObjFromDatestr(datestr);
     console.log("mdate = " + mdate);
+    console.log("mdate.getMonth() = " + mdate.getMonth());
+    console.log("mdate.getDay() = " + mdate.getDay());
+    console.log("mdate.getFullYear() = " + mdate.getFullYear());
+    console.log("mdate.getHours() = " + mdate.getHours());
+    console.log("mdate.getMinutes() = " + mdate.getMinutes());
+    console.log("mdate.getSeconds() = " + mdate.getSeconds());
+        
     
     let indates = emprecobj.timeInEvents.map((item) => getDateForItem(item));
     let outdates = emprecobj.timeOutEvents.map((item) => getDateForItem(item));
+    let indatesonday = new Array();
+    let outdatesonday = new Array();
     for (let n = 0; n < indates.length; n++)
     {
         console.log("indates[" + n + "] = " + indates[n]);
+        console.log("indates[" + n + "].getMonth() = " + indates[n].getMonth());
+        console.log("indates[" + n + "].getDay() = " + indates[n].getDay());
+        console.log("indates[" + n + "].getFullYear() = " + indates[n].getFullYear());
+        console.log("indates[" + n + "].getHours() = " + indates[n].getHours());
+        console.log("indates[" + n + "].getMinutes() = " + indates[n].getMinutes());
+        console.log("indates[" + n + "].getSeconds() = " + indates[n].getSeconds());
+
+        if (indates[n].getMonth() == mdate.getMonth() &&
+        mdate.getDay() == indates[n].getDay() &&
+        indates[n].getFullYear() == mdate.getFullYear())
+        {
+            indatesonday.push(indates[n]);
+        }
+        //else;//do nothing
     }
     for (let n = 0; n < outdates.length; n++)
     {
         console.log("outdates[" + n + "] = " + outdates[n]);
+        console.log("outdates[" + n + "].getMonth() = " + outdates[n].getMonth());
+        console.log("outdates[" + n + "].getDay() = " + outdates[n].getDay());
+        console.log("outdates[" + n + "].getFullYear() = " + outdates[n].getFullYear());
+        console.log("outdates[" + n + "].getHours() = " + outdates[n].getHours());
+        console.log("outdates[" + n + "].getMinutes() = " + outdates[n].getMinutes());
+        console.log("outdates[" + n + "].getSeconds() = " + outdates[n].getSeconds());
+
+        if (outdates[n].getMonth() == mdate.getMonth() &&
+        mdate.getDay() == outdates[n].getDay() &&
+        outdates[n].getFullYear() == mdate.getFullYear())
+        {
+            outdatesonday.push(outdates[n]);
+        }
+        //else;//do nothing
     }
+    for (let n = 0; n < indatesonday.length; n++)
+    {
+        console.log("indatesonday[" + n + "] = " + indatesonday[n]);
+    }//end of n for loop
+    for (let n = 0; n < outdatesonday.length; n++)
+    {
+        console.log("outdatesonday[" + n + "] = " + outdatesonday[n]);
+    }//end of n for loop
 
     throw "NOT DONE YET 6-27-2023 2:40 AM!";
 }
