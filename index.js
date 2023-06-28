@@ -148,6 +148,82 @@ function noMissingPunchesFor(empobj)
     return true;
 }
 
+function getDateObjFromDatestr(datestr)
+{
+    //console.log("datestr = " + datestr);
+
+    if (isDateStrInCorrectFmt(datestr));
+    else throw "date is not in the correct format cannot get the object!";
+
+    //console.log("datestr.length = " + datestr.length);
+
+    //my date string is in the format: YYYY-MM-DD HHMM
+    
+    let myyearstr = datestr.substring(0, 4);
+    let mymonthstr = datestr.substring(4 + 1, 7);
+    let mydaystr = "";
+    let myhrstr = "";
+    let myminstr = "";
+    if (datestr.length == 10)
+    {
+        mydaystr = datestr.substring(7 + 1);
+        myhrstr = "0";
+        myminstr = "0";
+    }
+    else if (datestr.length == 15)
+    {
+        mydaystr = datestr.substring(7 + 1, 10);
+        myhrstr = datestr.substring(10 + 1, 13);
+        myminstr = datestr.substring(13);
+    }
+    else throw "illegal length found and used for the datestr";
+
+    let myyearnum = Number(myyearstr);
+    let mymonthnum = Number(mymonthstr);
+    let mydaynum = Number(mydaystr);
+    let myhrnum = Number(myhrstr);
+    let myminnum = Number(myminstr);
+
+    let mdate = new Date(myyearnum, mymonthnum - 1, mydaynum, myhrnum, myminnum, 0);
+    //console.log("mdate = " + mdate);
+
+    return mdate;
+}
+
+function getDateForItem(item){
+    //console.log("indx = " + indx);
+    //console.log("item = " + item);
+    //console.log("Object.keys(item) = " + Object.keys(item));
+    //console.log("item.date = " + item.date);
+    //console.log("item.hour = " + item.hour);
+    let myhrstr = "" + item.hour;
+    if (myhrstr.length < 4)
+    {
+        if (item.hour < 1000)
+        {
+            if (item.hour < 100)
+            {
+                if (item.hour < 10)
+                {
+                    if (item.hour < 0)
+                    {
+                        throw "illegal hour found and used here!";
+                    }
+                    else myhrstr = "000" + myhrstr;
+                }
+                else myhrstr = "00" + myhrstr;
+            }
+            else myhrstr = "0" + myhrstr;
+            //console.log("NEW myhrstr = " + myhrstr);
+        }
+        else throw "the length should have been correct for the hour, but it was not!";
+    }
+    else if (myhrstr.length == 4);
+    else throw "hour string is too long!";
+    //console.log("FINAL myhrstr = " + myhrstr);
+    return getDateObjFromDatestr(item.date + " " + myhrstr);
+}
+
 //const birthday4 = new Date(1995, 11, 17, 3, 24, 0);
 //year, month, day, hour, minute, second
 //the month starts at 0 for January and 11 for December
@@ -168,6 +244,23 @@ function hoursWorkedOnDate(emprecobj, datestr)
     //if there is no time out event on given date: return from next timeout found
     //if no time out event after date: error
 
+    console.log("datestr = " + datestr);
+    console.log("datestr.length = " + datestr.length);
+
+    let mdate = getDateObjFromDatestr(datestr);
+    console.log("mdate = " + mdate);
+    
+    let indates = emprecobj.timeInEvents.map((item) => getDateForItem(item));
+    let outdates = emprecobj.timeOutEvents.map((item) => getDateForItem(item));
+    for (let n = 0; n < indates.length; n++)
+    {
+        console.log("indates[" + n + "] = " + indates[n]);
+    }
+    for (let n = 0; n < outdates.length; n++)
+    {
+        console.log("outdates[" + n + "] = " + outdates[n]);
+    }
+
     throw "NOT DONE YET 6-27-2023 2:40 AM!";
 }
 
@@ -187,7 +280,19 @@ function getAllValidDatesForEmp(emprecobj)
     if (noMissingPunchesFor(emprecobj));
     else throw "you missed some punches!";
 
-    throw "NOT DONE YET 6-27-2023 2:40 AM!";
+    //add all of the dates in the date objects to a string array
+    //then return it
+    let myvdatesarr = new Array();
+    for (let n = 0; n < emprecobj.timeInEvents.length; n++)
+    {
+        myvdatesarr.push(emprecobj.timeInEvents[n].date);
+    }
+    for (let n = 0; n < emprecobj.timeOutEvents.length; n++)
+    {
+        myvdatesarr.push(emprecobj.timeOutEvents[n].date);
+    }
+
+    return myvdatesarr;
 }
 
 function allWagesFor(emprecobj)
