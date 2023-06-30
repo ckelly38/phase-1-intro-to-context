@@ -936,6 +936,29 @@ function getNumHoursBetweenTwoDates(datea, dateb)
     }
 }
 
+function getMinDateOf(mdates)
+{
+    if (mdates == undefined || mdates == null || mdates.length < 1)
+    {
+        return null;
+    }
+    else if (mdates.length == 1) return mdates[0];
+    else
+    {
+        let mindatei = -1;
+        for (let n = 0; n < mdates.length; n++)
+        {
+            if (mindatei < 0 || n == 0 ||
+                isDateABeforeDateB(mdates[n], mdates[mindatei]))
+            {
+                mindatei = n;
+            }
+            //else;//do nothing
+        }
+        return mdates[mindatei];
+    }
+}
+
 function hoursWorkedOnDate(emprecobj, datestr)
 {
     if (isDateStrInCorrectFmt(datestr));
@@ -968,19 +991,30 @@ function hoursWorkedOnDate(emprecobj, datestr)
     
     let indates = emprecobj.timeInEvents.map((item) => getDateForItem(item));
     let outdates = emprecobj.timeOutEvents.map((item) => getDateForItem(item));
+    console.log("indates has " + indates.length + " item(s) on it:");
     for (let p = 0; p < indates.length; p++)
     {
         console.log("indates[" + p + "] = " + indates[p]);
     }
+    console.log("outdates has " + outdates.length + " item(s) on it:");
     for (let p = 0; p < outdates.length; p++)
     {
         console.log("outdates[" + p + "] = " + outdates[p]);
     }
 
+    if (indates.length < 1 && outdates.length < 1)
+    {
+        console.log("THE EMPLOYEE HAS NOT WORKED AT ALL!");
+        return 0;
+    }
+    //else;//do nothing
+    console.log();
+
     let empstartedandendedonsameday = 
         didEMPStartWorkOnAndEndOnTheDate(indates, outdates, mdate);
     console.log("empstartedandendedonsameday = " + empstartedandendedonsameday);
-    
+    console.log();
+
     if (empstartedandendedonsameday)
     {
         //now get the start and end date that was the same as the mdate
@@ -1043,9 +1077,211 @@ function hoursWorkedOnDate(emprecobj, datestr)
         {
             //first figure out which in goes with which out
             //then compute the time between them and add them up
-        }
+            //there will be an in before an out on the day
 
-        throw "NOT DONE YET NEED TO DO SOMETHING HERE 6-29-2023 3 AM!";
+            console.log("myinsonday has " + myinsonday.length + " item(s) on it:");
+            for (let p = 0; p < myinsonday.length; p++)
+            {
+                console.log("myinsonday[" + p + "] = " + myinsonday[p]);
+            }
+            console.log("myoutsonday has " + myoutsonday.length + " item(s) on it:");
+            for (let p = 0; p < myoutsonday.length; p++)
+            {
+                console.log("myoutsonday[" + p + "] = " + myoutsonday[p]);
+            }
+            console.log();
+
+            let myoutisformyinis = new Array();
+            for (let n = 0; n < myinsonday.length; n++) myoutisformyinis.push(-1);
+            for (let n = 0; n < myinsonday.length; n++)
+            {
+                let possibleoutsforin = new Array();
+                for (let k = 0; k < myoutsonday.length; k++)
+                {
+                    console.log("myoutsonday[" + k + "] = " + myoutsonday[k]);
+                    console.log("myinsonday[" + n + "] = " + myinsonday[n]);
+                    //console.log("myinsonday[" + n + "].getMonth() = " +
+                    //    myinsonday[n].getMonth());
+                    //console.log("myinsonday[" + n + "].getDate() = " +
+                    //    myinsonday[n].getDate());
+                    //console.log("myinsonday[" + n + "].getFullYear() = " +
+                    //    myinsonday[n].getFullYear());
+                    
+                    let useafirst = false;
+                    if (areTwoDatesOnTheSameDay(myinsonday[n], myoutsonday[k]))
+                    {
+                        useafirst =
+                            isDateATimeBeforeDateB(myinsonday[n], myoutsonday[k]);
+                    }
+                    else useafirst = isDateABeforeDateB(myinsonday[n], myoutsonday[k]);
+                    console.log("useafirst = " + useafirst);
+                    
+                    if (useafirst)
+                    {
+                        //this is a possible out for the in
+                        console.log("for the in at index n = " +
+                            n + " found a possible out at index k = " + k + "!");
+                        console.log("myoutsonday[k] = " + myoutsonday[k]);
+                        console.log("myinsonday[n] = " + myinsonday[n]);
+                        console.log();
+                        possibleoutsforin.push(k);
+                    }
+                    //else;//do nothing not possible
+                }
+
+                console.log("possibleoutsforin.length = " + possibleoutsforin.length);
+                console.log("myinsonday[" + n + "] = " + myinsonday[n]);
+                if (possibleoutsforin.length < 1);
+                else if (possibleoutsforin.length == 1)
+                {
+                    myoutisformyinis[n] = possibleoutsforin[0];
+                }
+                else
+                {
+                    //there are multiple possibilities, we need to pick the closest one
+                    let poutdates = new Array();
+                    for (let k = 0; k < possibleoutsforin.length; k++)
+                    {
+                        console.log("possibleoutsforin[" + k + "] = " +
+                            possibleoutsforin[k]);
+                        console.log("myoutsonday[possibleoutsforin[" + k + "]] = " +
+                            myoutsonday[possibleoutsforin[k]]);
+                        poutdates.push(myoutsonday[possibleoutsforin[k]]);
+                    }
+                    console.log();
+
+                    let mindate = getMinDateOf(poutdates);
+                    console.log("mindate = " + mindate);
+                    console.log();
+
+                    let fndmindate = false;
+                    for (let k = 0; k < possibleoutsforin.length; k++)
+                    {
+                        console.log("myoutsonday[possibleoutsforin[" + k + "]] = " +
+                            myoutsonday[possibleoutsforin[k]]);
+                        console.log("mindate = " + mindate);
+
+                        if (mindate === myoutsonday[possibleoutsforin[k]])
+                        {
+                            console.log("found mindate!");
+                            fndmindate = true;
+                            myoutisformyinis[n] = possibleoutsforin[k];
+                            break;
+                        }
+                        //else;//do nothing
+                    }
+                    console.log("fndmindate = " + fndmindate);
+
+                    if (fndmindate);
+                    else throw "mindate was found on the list, but now it was not!";
+                }
+                console.log("NEW myoutisformyinis[" + n + "] = " + myoutisformyinis[n]);
+                console.log("moving on to the next item!");
+                console.log();
+            }//end of n for loop
+
+            let mhrs = 0;
+            for (let n = 0; n < myinsonday.length; n++)
+            {
+                console.log("myinsonday[" + n + "] = " + myinsonday[n]);
+                console.log("myoutisformyinis[" + n + "] = " + myoutisformyinis[n]);
+                if (myoutisformyinis[n] < 0 || myoutisformyinis[n] > myoutsonday.length - 1)
+                {
+                    //need to use midnight as the subtractor...
+                    //this in time does not have an out time on the day
+                    //use midnight the next day as other date
+                    
+                    let myodate = new Date(myinsonday[n].getFullYear(),
+                        myinsonday[n].getMonth(), myinsonday[n].getDate() + 1);
+                    console.log("myodate = " + myodate);
+                    
+                    if (isDateABeforeDateB(myinsonday[n], myodate));
+                    else throw "the out date must be after the in date, but it was not!";
+
+                    mhrs += getNumHoursBetweenTwoDates(myinsonday[n], myodate);
+                }
+                else
+                {
+                    console.log("myoutsonday[myoutisformyinis[" + n + "]] = " +
+                        myoutsonday[myoutisformyinis[n]]);
+                    mhrs += getNumHoursBetweenTwoDates(myinsonday[n],
+                        myoutsonday[myoutisformyinis[n]]);
+                }
+                console.log("NEW mhrs = " + mhrs);
+            }//end of n for loop
+            console.log("hours after all of the in and out combos = mhrs = " + mhrs);
+            console.log();
+
+            //need to make sure there were no outs missed
+            let usedoutdate = new Array();
+            for (n = 0; n < myoutsonday.length; n++) usedoutdate[n] = false;
+            for (let n = 0; n < myoutisformyinis.length; n++)
+            {
+                if ((myoutisformyinis[n] > 0 || myoutisformyinis[n] == 0) &&
+                (myoutisformyinis[n] < myoutsonday.length))
+                {
+                    usedoutdate[myoutisformyinis[n]] = true;
+                }
+                //else;//do nothing
+            }
+            
+            let numoutsmissed = 0;
+            let firstmissedouti = -1;
+            for (n = 0; n < myoutsonday.length; n++)
+            {
+                console.log("usedoutdate[" + n + "] = " + usedoutdate[n]);
+
+                if (usedoutdate[n]);
+                else
+                {
+                    numoutsmissed++;
+                    if (firstmissedouti < 0) firstmissedouti = n;
+                    //else;//do nothing
+                }
+            }
+            console.log("numoutsmissed = " + numoutsmissed);
+            console.log("firstmissedouti = " + firstmissedouti);
+
+            if (numoutsmissed < 0 || numoutsmissed > 1)
+            {
+                throw "illegal number of outs were missed were found and used here!";
+            }
+            //else;//do nothing
+
+            if (numoutsmissed == 1)
+            {
+                //we missed an out here so we need from midnight to this time
+                if (firstmissedouti < 0 || firstmissedouti > myoutsonday.length - 1)
+                {
+                    throw "illegal value found and used for the first missed out index!";
+                }
+                //else;//do nothing safe to proceed
+
+                console.log("myoutsonday[" + firstmissedouti + "] = " +
+                    myoutsonday[firstmissedouti]);
+
+                let myodate = new Date(myoutsonday[firstmissedouti].getFullYear(),
+                    myoutsonday[firstmissedouti].getMonth(),
+                    myoutsonday[firstmissedouti].getDate());
+                
+                console.log("myodate = " + myodate);
+                
+                if (isDateATimeBeforeDateB(myodate, myoutsonday[firstmissedouti]));
+                else
+                {
+                    throw "the generated in date must be before the out date, but it " +
+                        "was not!";
+                }
+
+                mhrs += getNumHoursBetweenTwoDates(myodate,
+                    myoutsonday[firstmissedouti]);
+                console.log("NEW mhrs = " + mhrs);
+            }
+            //else;//do nothing
+            console.log("FINAL mhrs = " + mhrs);
+
+            return mhrs;
+        }
     }
     //else;//do nothing
 
@@ -1057,6 +1293,104 @@ function hoursWorkedOnDate(emprecobj, datestr)
 
     throw "NOT DONE YET 6-27-2023 2:40 AM!";
 }
+
+//driver function to test methods
+function testHoursWorkedOnDay()
+{
+    let myempprops = ["firstname", "familyname", "title", 30];
+    let myemp = createEmployeeRecord(myempprops);
+    
+    //in for morning, out for lunch, in for afternoon, out for evening
+    //
+    //in the night before, out in morning, in for afternoon, out for evening,
+    //in for night
+
+    //YYYY-MM-DD HHMM
+    let testnohours = false;
+    let testworkedoneshift = false;
+    let testworkedcontinuously = true;
+    if (testnohours)
+    {
+        testworkedoneshift = false;
+        testworkedcontinuously = false;
+    }
+    else
+    {
+        if (testworkedcontinuously)
+        {
+            if (testworkedoneshift) testworkedoneshift = false;
+            //else;//do nothing
+        }
+    }
+    console.log("testnohours = " + testnohours);
+    console.log("testworkedoneshift = " + testworkedoneshift);
+    console.log("testworkedcontinuously = " + testworkedcontinuously);
+
+    if (testnohours);
+    else
+    {
+        if (testworkedoneshift);
+        else
+        {
+            createTimeInEvent(myemp, "2020-03-30 2015");
+            if (testworkedcontinuously);
+            else createTimeOutEvent(myemp, "2020-03-31 0100");
+        }
+        if (testworkedoneshift && !testworkedcontinuously)
+        {
+            createTimeInEvent(myemp, "2020-03-31 0815");
+            createTimeOutEvent(myemp, "2020-03-31 1200");
+        }
+        //else;//do nothing
+        if (testworkedoneshift);
+        else
+        {
+            if (testworkedcontinuously);
+            else
+            {
+                createTimeInEvent(myemp, "2020-03-31 1230");
+                createTimeOutEvent(myemp, "2020-03-31 1700");
+                createTimeInEvent(myemp, "2020-03-31 2015");
+            }
+            createTimeOutEvent(myemp, "2020-04-01 0200");
+        }
+    }
+
+    let myhrsemp = hoursWorkedOnDate(myemp, "2020-03-31");
+    console.log("testnohours = " + testnohours);
+    console.log("testworkedoneshift = " + testworkedoneshift);
+    console.log("testworkedcontinuously = " + testworkedcontinuously);
+    console.log("myhrsemp = " + myhrsemp);
+
+    if (testnohours)
+    {
+        if (myhrsemp == 0);
+        else
+        {
+            throw "TEST FAILED: testing no hours, means the employee never worked, " +
+                "should have returned 0 hours, but it did not!";
+        }
+    }
+    else
+    {
+        if (testworkedoneshift)
+        {
+            if (myhrsemp == 3.75);
+            else throw "TEST FAILED: the amount of hours for the shift was wrong!";
+        }
+        else
+        {
+            if (testworkedcontinuously)
+            {
+                if (myhrsemp == 24);
+                else throw "TEST FAILED: the amount of hours for the shift was wrong!";
+            }
+            //else;//do nothing
+        }
+    }
+    console.log("ALL TESTS PAST!");
+}
+testHoursWorkedOnDay();
 
 function wagesEarnedOnDate(emprecobj, datestr)
 {
