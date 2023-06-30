@@ -1,4 +1,3 @@
-// Your code here
 function createEmployeeRecord(arr)
 {
     let emprecd = {
@@ -587,19 +586,24 @@ function getNumDaysInMonth(monthi)
 
 function getNumDaysBetweenTwoDates(datea, dateb)
 {
-    console.log("INSIDE GET NUM DAYS BETWEEN TWO DATES ()!");
-    console.log("datea = " + datea);
-    console.log("dateb = " + dateb);
-    console.log("datea.getMonth() = " + datea.getMonth());
-    console.log("datea.getDate() = " + datea.getDate());
-    console.log("datea.getFullYear() = " + datea.getFullYear());
-    console.log("dateb.getMonth() = " + dateb.getMonth());
-    console.log("dateb.getDate() = " + dateb.getDate());
-    console.log("dateb.getFullYear() = " + dateb.getFullYear());
+    //console.log("INSIDE GET NUM DAYS BETWEEN TWO DATES ()!");
+    //console.log("datea = " + datea);
+    //console.log("dateb = " + dateb);
+    //console.log("datea.getMonth() = " + datea.getMonth());
+    //console.log("datea.getDate() = " + datea.getDate());
+    //console.log("datea.getFullYear() = " + datea.getFullYear());
+    //console.log("dateb.getMonth() = " + dateb.getMonth());
+    //console.log("dateb.getDate() = " + dateb.getDate());
+    //console.log("dateb.getFullYear() = " + dateb.getFullYear());
     
-    let sa = (isDateABeforeDateB(datea, dateb));
+    let sa = isDateABeforeDateB(datea, dateb);
+    let smday = areTwoDatesOnTheSameDay(datea, dateb);
     
-    console.log("sa = " + sa);
+    //console.log("sa = " + sa);
+    //console.log("smday = " + smday);
+    
+    if (smday) return 0;
+    //else;//do nothing safe to proceed
     
     //30 days has september (9) april (4) june (6) and november (11)
     //all the rest have 31
@@ -612,17 +616,17 @@ function getNumDaysBetweenTwoDates(datea, dateb)
     if (sa)
     {
         //2021 4 3 - 2019 5 6 = 1 year and ? 
-        console.log("datea = " + datea);
-        console.log("dateb = " + dateb);
-        console.log("datea.getMonth() = " + datea.getMonth());
-        console.log("datea.getDate() = " + datea.getDate());
-        console.log("datea.getFullYear() = " + datea.getFullYear());
-        console.log("dateb.getMonth() = " + dateb.getMonth());
-        console.log("dateb.getDate() = " + dateb.getDate());
-        console.log("dateb.getFullYear() = " + dateb.getFullYear());
+        //console.log("datea = " + datea);
+        //console.log("dateb = " + dateb);
+        //console.log("datea.getMonth() = " + datea.getMonth());
+        //console.log("datea.getDate() = " + datea.getDate());
+        //console.log("datea.getFullYear() = " + datea.getFullYear());
+        //console.log("dateb.getMonth() = " + dateb.getMonth());
+        //console.log("dateb.getDate() = " + dateb.getDate());
+        //console.log("dateb.getFullYear() = " + dateb.getFullYear());
         
         let yrdiff = dateb.getFullYear() - datea.getFullYear();
-        console.log("init yrdiff = " + yrdiff);
+        //console.log("init yrdiff = " + yrdiff);
         if (datea.getMonth() < dateb.getMonth());
         else if (dateb.getMonth() == datea.getMonth())
         {
@@ -631,24 +635,24 @@ function getNumDaysBetweenTwoDates(datea, dateb)
             else yrdiff--;
         }
         else yrdiff--;
-        console.log("FINAL yrdiff = " + yrdiff);
+        //console.log("FINAL yrdiff = " + yrdiff);
 
         if (yrdiff > 1) numdays = yrdiff * 365;
         //else;//do nothing
-        console.log("init numdays = " + numdays);
+        //console.log("init numdays = " + numdays);
         
         let numleapdays = getNumLeapYearsBetweenTwoDates(datea, dateb);
-        console.log("numleapdays = " + numleapdays);
+        //console.log("numleapdays = " + numleapdays);
 
         numdays += numleapdays;
-        console.log("NEW numdays = " + numdays);
+        //console.log("NEW numdays = " + numdays);
         
         //compute the remainder which will be less than a year
         //first take start date and add yrdiff to it
         let mynwyr = datea.getFullYear() + yrdiff;
-        console.log("datea = " + datea);
-        console.log("dateb = " + dateb);
-        console.log("datea.getFullYear() + yrdiff = " +  mynwyr);
+        //console.log("datea = " + datea);
+        //console.log("dateb = " + dateb);
+        //console.log("datea.getFullYear() + yrdiff = " +  mynwyr);
 
         if (mynwyr < dateb.getFullYear())
         {
@@ -656,20 +660,20 @@ function getNumDaysBetweenTwoDates(datea, dateb)
             //first figure out how many days are left in the month
             const numdaysleftinmonth =
                 (getNumDaysInMonth(datea.getMonth()) - datea.getDate());
-            console.log("datea.getMonth() = " + datea.getMonth());
-            console.log("datea.getDate() = " + datea.getDate());
-            console.log("datea.getFullYear() = " + datea.getFullYear());
-            console.log("numdaysleftinmonth = " + numdaysleftinmonth);
+            //console.log("datea.getMonth() = " + datea.getMonth());
+            //console.log("datea.getDate() = " + datea.getDate());
+            //console.log("datea.getFullYear() = " + datea.getFullYear());
+            //console.log("numdaysleftinmonth = " + numdaysleftinmonth);
 
             let numdaysleftinyr = 0;
             for (let m = datea.getMonth() + 1; m < 12; m++)
             {
                 numdaysleftinyr += getNumDaysInMonth(m);
             }
-            console.log("numdaysleftinyr = " + numdaysleftinyr);
+            //console.log("numdaysleftinyr = " + numdaysleftinyr);
 
             numdays += numdaysleftinmonth + numdaysleftinyr;
-            console.log("NEW numdays = " + numdays);
+            //console.log("NEW numdays = " + numdays);
 
             //now go from jan 1st of the year to the day and the month of dateb
             let numdaysbeforemnth = 0;
@@ -677,58 +681,129 @@ function getNumDaysBetweenTwoDates(datea, dateb)
             {
                 numdaysbeforemnth += getNumDaysInMonth(m);
             }
-            console.log("numdaysbeforemnth = " + numdaysbeforemnth);
+            //console.log("numdaysbeforemnth = " + numdaysbeforemnth);
 
             numdays += numdaysbeforemnth;
-            console.log("NEW numdays = " + numdays);
+            //console.log("NEW numdays = " + numdays);
             
-            console.log("datea.getDate() = " + datea.getDate());
-            console.log("dateb.getDate() = " + dateb.getDate());
-            console.log("4 * 365 = " + (4*365));
+            //console.log("datea.getDate() = " + datea.getDate());
+            //console.log("dateb.getDate() = " + dateb.getDate());
+            //console.log("4 * 365 = " + (4*365));
 
-            numdays += dateb.getDate() - 1;
-            console.log("FINAL numdays = " + numdays);
+            numdays += dateb.getDate();
+            //console.log("FINAL numdays = " + numdays);
 
             return numdays;
         }
-        else
+        else if (mynwyr == dateb.getFullYear())
         {
-            //do something here...
+            //we need to go from datea to date b some how the years are the same
+            //are the months the same? if not, go to the end of the month and then
+            //get all of the days in all of the months before dateb's month
+            //if yes, then just go to b's date.
+            //console.log("the years are the same now!");
+            if (datea.getMonth() == dateb.getMonth())
+            {
+                //console.log("the months are the same now!");
+                //console.log("datea.getDate() = " + datea.getDate());
+                //console.log("dateb.getDate() = " + dateb.getDate());
+                
+                numdays += dateb.getDate() - datea.getDate();
+                //console.log("FINAL numdays = " + numdays);
+
+                return numdays;
+            }
+            else if (datea.getMonth() < dateb.getMonth())
+            {
+                //console.log("the months are different now!");
+
+                //first figure out how many days are left in the month
+                //then get the number of days in the months
+                //leading up to the one we want
+                const numdaysleftinmonth =
+                    (getNumDaysInMonth(datea.getMonth()) - datea.getDate());
+                //console.log("datea.getMonth() = " + datea.getMonth());
+                //console.log("datea.getDate() = " + datea.getDate());
+                //console.log("datea.getFullYear() = " + datea.getFullYear());
+                //console.log("numdaysleftinmonth = " + numdaysleftinmonth);
+                
+                let numdaysbeforemnth = 0;
+                for (let m = datea.getMonth() + 1; m < dateb.getMonth() && m < 12; m++)
+                {
+                    numdaysbeforemnth += getNumDaysInMonth(m);
+                }
+                //console.log("numdaysbeforemnth = " + numdaysbeforemnth);
+
+                numdays += numdaysleftinmonth + numdaysbeforemnth;
+                //console.log("NEW numdays = " + numdays);
+
+                //console.log("datea.getDate() = " + datea.getDate());
+                //console.log("dateb.getDate() = " + dateb.getDate());
+                //console.log("4 * 365 = " + (4*365));
+
+                numdays += dateb.getDate();
+                //console.log("FINAL numdays = " + numdays);
+
+                return numdays;
+            }
+            else
+            {
+                throw "dateb's month must be greater than or equal to a's month for " +
+                    "dateb to be after datea and for their years to be the same, but " +
+                    "this was not the case!";
+            }
         }
+        else throw "since we began with datea, then we cannot be greater than b's year!";
     }
     else return getNumDaysBetweenTwoDates(dateb, datea);
-
-    throw "NOT DONE YET 6-29-2023 5 AM!";
 }
 
 function getNumHoursBetweenTwoDates(datea, dateb)
 {
-    let useafirst = (isDateABeforeDateB(datea, dateb));
-    let isonsameday = (areTwoDatesOnTheSameDay(datea, dateb));
+    //console.log("INSIDE GET NUM HOURS BETWEEN TWO DATES ()!");
+    
+    let isonsameday = areTwoDatesOnTheSameDay(datea, dateb);
+    
+    //console.log("isonsameday = " + isonsameday);
+
+    let useafirst = false;
+    if (isonsameday) useafirst = isDateATimeBeforeDateB(datea, dateb);
+    else useafirst = isDateABeforeDateB(datea, dateb);
+    
+    //console.log("useafirst = " + useafirst);
+    //console.log("datea = " + datea);
+    //console.log("dateb = " + dateb);
+    
     let hrdiff = 0;
     let mindiff = 0;
     let secdiff = 0;
-    let yrdiff = 0;
-    let monthdiff = 0;
+    //let yrdiff = 0;
+    //let monthdiff = 0;
     let daydiff = 0;
     if (useafirst)
     {
-        yrdiff = dateb.getFullYear() - datea.getFullYear();
+        //yrdiff = dateb.getFullYear() - datea.getFullYear();
         hrdiff = dateb.getHours() - datea.getHours();
         mindiff = dateb.getMinutes() - datea.getMinutes();
         secdiff = dateb.getSeconds() - datea.getSeconds();
-        monthdiff = dateb.getMonth() - datea.getMonth();
-        daydiff = dateb.getDate() - datea.getDate();
+        //monthdiff = dateb.getMonth() - datea.getMonth();
+        //daydiff = dateb.getDate() - datea.getDate();
+        daydiff = getNumDaysBetweenTwoDates(datea, dateb);
     }
     else
     {
-        yrdiff = datea.getFullYear() - dateb.getFullYear();
+        //yrdiff = datea.getFullYear() - dateb.getFullYear();
         hrdiff = datea.getHours() - dateb.getHours();
         mindiff = datea.getMinutes() - dateb.getMinutes();
         secdiff = datea.getSeconds() - dateb.getSeconds();
-        monthdiff = datea.getMonth() - dateb.getMonth();
-        daydiff = datea.getDate() - dateb.getDate();
+        //monthdiff = datea.getMonth() - dateb.getMonth();
+        //daydiff = datea.getDate() - dateb.getDate();
+        daydiff = getNumDaysBetweenTwoDates(dateb, datea);
     }
+    //console.log("init daydiff = " + daydiff);
+    //console.log("init hrdiff = " + hrdiff);
+    //console.log("init mindiff = " + mindiff);
+    //console.log("init secdiff = " + secdiff);
 
     //remember: there are 24 hours in 1 day
     //there are 60 minutes in 1 hour
@@ -764,11 +839,18 @@ function getNumHoursBetweenTwoDates(datea, dateb)
         //mindiff = -11 -> 49 -> 48
         //secdiff = -9 -> -9 -> 51
 
+        //console.log("datea = " + datea);
+        //console.log("dateb = " + dateb);
+        //console.log("OLD secdiff = " + secdiff);
+        //console.log("OLD mindiff = " + mindiff);
         while(secdiff < 0)
         {
             mindiff--;
             secdiff += 60;
         }
+        //console.log("FINAL secdiff = " + secdiff);
+        //console.log("NEW mindiff = " + mindiff);
+        //console.log("OLD hrdiff = " + hrdiff);
 
         //if minute difference is negative convert an hour to minutes and subtract
         //then subtract 1 from the hour.
@@ -778,6 +860,14 @@ function getNumHoursBetweenTwoDates(datea, dateb)
             hrdiff--;
             mindiff += 60;
         }
+        //console.log("FINAL mindiff = " + mindiff);
+        //console.log("FINAL hrdiff = " + hrdiff);
+        
+        if (hrdiff < 0 || mindiff < 0 || secdiff < 0)
+        {
+            throw "the final differences must not be less than zero!";
+        }
+        //else;//do nothing
 
         return hrdiff + (mindiff/60) + (secdiff/(60*60));
     }
@@ -805,44 +895,44 @@ function getNumHoursBetweenTwoDates(datea, dateb)
         //daydiff = -27 -> 2
         //times are the same below this point
 
+        //console.log("datea = " + datea);
+        //console.log("dateb = " + dateb);
+        //console.log("OLD secdiff = " + secdiff);
+        //console.log("OLD mindiff = " + mindiff);
+        //console.log("init daydiff = " + daydiff);
         while(secdiff < 0)
         {
             mindiff--;
             secdiff += 60;
         }
+        //console.log("FINAL secdiff = " + secdiff);
+        //console.log("NEW mindiff = " + mindiff);
+        //console.log("OLD hrdiff = " + hrdiff);
 
         while (mindiff < 0)
         {
             hrdiff--;
             mindiff += 60;
         }
+        //console.log("FINAL mindiff = " + mindiff);
+        //console.log("NEW hrdiff = " + hrdiff);
+        //console.log("OLD daydiff = " + daydiff);
 
         while(hrdiff < 0)
         {
             daydiff--;
             hrdiff += 24;
         }
+        //console.log("FINAL hrdiff = " + hrdiff);
+        //console.log("FINAL daydiff = " + daydiff);
 
-        //let numleapdays = getNumLeapYearsBetweenTwoDates(datea, dateb);
-        //assume all years have 365 days
-        //add the num leapdays when needed
-        //console.log("numleapdays = " + numleapdays);
-
-        //if we cross over or end on leap day we add an extra day
-        //let us say 1/1/2020 - 1/1/2016 = include 2016 do not include 2020
-        
-        //if (daydiff < 0) daydiff += numleapdays;
+        if (daydiff < 0 || hrdiff < 0 || mindiff < 0 || secdiff < 0)
+        {
+            throw "the final differences must not be less than zero!";
+        }
         //else;//do nothing
 
-        //while(daydiff < 0)
-        //{
-            //monthdiff--;
-            //not sure how many days to add 31, 30, 29, 28?
-            
-            throw "NOT DONE YET NEED TO DO SOMETHING HERE 6-29-2023 3 AM!";
-        //}
-
-        //return hrdiff + (mindiff/60) + (secdiff/(60*60));
+        return (daydiff*24)+ hrdiff + (mindiff/60) + (secdiff/(60*60));
     }
 }
 
@@ -895,7 +985,11 @@ function hoursWorkedOnDate(emprecobj, datestr)
     {
         //now get the start and end date that was the same as the mdate
         //what happens if there are multiple ins and outs on the same day?
+        //
         //in for morning, out for lunch, in for afternoon, out for evening
+        //
+        //in the night before, out in morning, in for afternoon, out for evening,
+        //in for night
         let myinsonday = new Array();
         for (let n = 0; n < indates.length; n++)
         {
@@ -917,9 +1011,12 @@ function hoursWorkedOnDate(emprecobj, datestr)
         if (myinsonday.length == myoutsonday.length);
         else throw "the number of ins and outs must be the same!";
         
-        let mytestdatea = new Date(2020, 2, 1);
-        let mytestdateb = new Date(2020, 2, 29);
-        let mytestnumdays = getNumDaysBetweenTwoDates(mytestdatea, mytestdateb);
+        //let mytestdatea = new Date(2019, 11, 31, 20, 54, 54);
+        //let mytestdateb = new Date(2020, 0, 1, 6, 47, 47);
+        //let mytestnumdays = getNumDaysBetweenTwoDates(mytestdatea, mytestdateb);
+        //let mytestnumhours = getNumHoursBetweenTwoDates(mytestdatea, mytestdateb);
+        //console.log("mytestnumdays = " + mytestnumdays);
+        //console.log("mytestnumhours = " + mytestnumhours);
 
         if (myinsonday.length < 1 || myoutsonday.length < 1)
         {
@@ -927,9 +1024,18 @@ function hoursWorkedOnDate(emprecobj, datestr)
         }
         else if (myinsonday.length == 1)
         {
+            console.log("there is only one in found for the day!");
             if (myoutsonday.length == 1)
             {
                 //just compute the time
+                console.log("there is only one out found for the day!");
+                
+                let mhrs = getNumHoursBetweenTwoDates(myinsonday[0], myoutsonday[0]);
+                
+                console.log("mhrs = " + mhrs);
+                console.log("myinsonday[0] = " + myinsonday[0]);
+                console.log("myoutsonday[0] = " + myoutsonday[0]);
+                return mhrs;
             }
             else throw "the number of ins and outs must be the same!";
         }
@@ -973,11 +1079,45 @@ function getAllValidDatesForEmp(emprecobj)
     let myvdatesarr = new Array();
     for (let n = 0; n < emprecobj.timeInEvents.length; n++)
     {
-        myvdatesarr.push(emprecobj.timeInEvents[n].date);
+        let addit = true;
+        if (myvdatesarr.length < 1);
+        else
+        {
+            for (let k = 0; k < myvdatesarr.length; k++)
+            {
+                if (myvdatesarr[k] === emprecobj.timeInEvents[n].date)
+                {
+                    addit = false;
+                    break;
+                }
+                //else;//do nothing
+            }
+        }
+        //console.log("addit = " + addit);
+
+        if (addit) myvdatesarr.push(emprecobj.timeInEvents[n].date);
+        //else;//do nothing
     }
     for (let n = 0; n < emprecobj.timeOutEvents.length; n++)
     {
-        myvdatesarr.push(emprecobj.timeOutEvents[n].date);
+        let addit = true;
+        if (myvdatesarr.length < 1);
+        else
+        {
+            for (let k = 0; k < myvdatesarr.length; k++)
+            {
+                if (myvdatesarr[k] === emprecobj.timeOutEvents[n].date)
+                {
+                    addit = false;
+                    break;
+                }
+                //else;//do nothing
+            }
+        }
+        //console.log("addit = " + addit);
+
+        if (addit) myvdatesarr.push(emprecobj.timeOutEvents[n].date);
+        //else;//do nothing
     }
 
     return myvdatesarr;
